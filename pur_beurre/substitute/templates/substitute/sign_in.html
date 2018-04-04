@@ -1,0 +1,26 @@
+{% extends 'substitute/base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 mx-auto text-center">
+      <h1>Inscription</h1>
+      {% if error %}
+        <p><strong>{{ error }}</strong></p>
+      {% endif %}
+      {% if confirmation_message %}
+        <p><strong>{{ confirmation_message }}</strong></p>
+      {% else %}
+        <form method="post" action="{% url 'substitute:sign_in' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Envoyer" />
+        </form>
+      {% endif %}
+    </div>  
+ </div>
+</div>
+
+{% endblock %}
+

@@ -17,13 +17,14 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.urls import path
+# from django.contrib.auth import views as auth_views
+
 
 from substitute import views
 
 urlpatterns = [
 	url(r'^$', views.index),
-	url(r'^substitute/', include('substitute.urls')),
+	url(r'^substitute/', include(('substitute.urls','substitute'), namespace="substitute")),
     url(r'^admin/', admin.site.urls),
 ]
 
