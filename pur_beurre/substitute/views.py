@@ -60,3 +60,9 @@ def sign_in(request):
 		form = SignInForm()
 
 	return render(request, 'substitute/sign_in.html', locals())
+
+
+def user_account(request):
+
+	return render(request, 'substitute/account.html', locals())
+

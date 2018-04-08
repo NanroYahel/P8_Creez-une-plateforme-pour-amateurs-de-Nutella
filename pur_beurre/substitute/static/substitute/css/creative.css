@@ -41,6 +41,9 @@ h6 {
 footer{
   background-color: #c45525;
   min-height: 100px;
+/*  position: fixed;
+  bottom: 0;
+  width: 100%;*/
 }
 
 footer .container{
@@ -83,6 +86,7 @@ section {
 
 .section-heading {
   margin-top: 0;
+  padding-top: 4rem;
 }
 
 ::-moz-selection {
@@ -337,4 +341,16 @@ header.masthead p {
 
 .btn-primary:active, .btn-primary:focus {
   box-shadow: 0 0 0 0.2rem rgba(240, 95, 64, 0.5) !important;
+}
+
+.form_div{
+
+  margin-top: 10%;
+  margin-bottom: 10%;
+
+}
+
+.form_div p{
+  margin-right: 20%;
+  text-align: right;
 }
