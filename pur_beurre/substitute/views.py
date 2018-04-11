@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 
 from .forms import LoginForm, SignInForm
+from .models import Product
+from substitute import utils
 
 def index(request):
 	return render(request, 'substitute/index.html')
@@ -66,3 +68,7 @@ def user_account(request):
 
 	return render(request, 'substitute/account.html', locals())
 
+def product_sheet(request):
+	product_to_display = Product.objects.get(pk=1)
+	return render(request, 'substitute/product_sheet.html', locals())
+	

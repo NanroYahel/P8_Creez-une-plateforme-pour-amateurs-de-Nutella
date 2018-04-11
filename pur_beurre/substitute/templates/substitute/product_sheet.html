@@ -1,0 +1,17 @@
+{% extends 'substitute/base.html' %}
+
+{% block content %}
+<section id="account_info">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1>{{ product_to_display.name }}</h1>
+        <p><strong>Cagtegories :</strong> {{ product_to_display.categories }}</p>
+        <p><strong>Score : </strong> {{ product_to_display.score }}</p>
+        <img src="{{ product_to_display.image_url }}" alt="Photo du produit : {{ product_to_display.name }}"/>
+      </div>  
+   </div>
+  </div>
+</section>
+
+{% endblock %}
