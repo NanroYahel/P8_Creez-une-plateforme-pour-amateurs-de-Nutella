@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.template import loader
+# from django.http import HttpResponse
+# from django.template import loader
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -68,7 +68,28 @@ def user_account(request):
 
 	return render(request, 'substitute/account.html', locals())
 
-def product_sheet(request):
-	product_to_display = Product.objects.get(pk=1)
+def product_sheet(request, product_id):
+	product_to_display = Product.objects.get(pk=product_id)
 	return render(request, 'substitute/product_sheet.html', locals())
 	
+def search(request):
+	query = request.GET.get('query')
+	no_result_message = False
+	no_query_message = False
+	if not query:
+		products = Product.objects.all()
+		query = "" #Use to not display 'None' in the title of the result page
+		no_query_message = True
+	else:
+		products = Product.objects.filter(name__icontains=query)
+
+		if len(products) ==0:
+			no_result_message = 'Sorry, there is no result...'
+	context = {
+		'products':products,
+		'keyword':query,
+		'no_result_message':no_result_message,
+		'no_query_message':no_query_message
+	}
+
+	return render(request, 'substitute/search_result.html', context)

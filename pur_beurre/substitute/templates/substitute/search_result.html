@@ -1,0 +1,25 @@
+{% extends 'substitute/base.html' %}
+
+{% block content %}
+<section id="list_result">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1>Résultat de la recherche : {{ keyword }}</h1>
+        {% if no_result_message %}
+        <p>{{ no_result_message }}</p>
+        {% elif no_query_message %}
+        <p>Vous n'avez rien entré dans le champ de recherche.</br>
+        Voici la liste des produits : </p>
+        {% endif %}
+        <ul>
+        	{% for result in products  %}
+        	<li><a href="{% url 'substitute:product_sheet' product_id=result.id %}">{{ result.name }}</a></li>
+        	{% endfor %}
+       </ul>
+      </div>  
+   </div>
+  </div>
+</section>
+
+{% endblock %}

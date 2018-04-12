@@ -16,8 +16,9 @@
           </div>
           <div class="row">
             <div class="col-lg-10 mx-auto form-search-substitute">
-              <form method="post" action="">
-                <input class="col-lg-8" type="text" name="aliment_cherche"  id="search-zone" placeholder="Saisissez un aliment">
+              <form method="get" action="{% url 'substitute:search' %}">
+                {% csrf_token %}
+                <input class="col-lg-8" type="text" name="query"  id="search-zone" placeholder="Saisissez un aliment">
                 <input class="col-lg-2" type="submit" value="Chercher" id="button">
             </form>
             </div>
