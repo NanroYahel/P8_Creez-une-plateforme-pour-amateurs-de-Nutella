@@ -1,0 +1,21 @@
+{% extends 'substitute/base.html' %}
+
+{% block content %}
+
+  {% for substitute in list_substitute %}
+    <section id="account_info">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            <h1>{{ substitute.name }}</h1>
+            <p><strong>Cagtegories :</strong> {{ substitute.categories }}</p>
+            <p><strong>Score : </strong> {{ substitute.score }}</p>
+            <img src="{{ substitute.image_url }}" alt="Photo du produit : {{ substitute.name }}"/>
+            
+          </div>  
+       </div>
+      </div>
+    </section>
+  {% endfor %}
+
+{% endblock %}

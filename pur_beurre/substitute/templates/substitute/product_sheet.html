@@ -9,6 +9,10 @@
         <p><strong>Cagtegories :</strong> {{ product_to_display.categories }}</p>
         <p><strong>Score : </strong> {{ product_to_display.score }}</p>
         <img src="{{ product_to_display.image_url }}" alt="Photo du produit : {{ product_to_display.name }}"/>
+        <form method="get" action="{% url 'substitute:find_substitute' product_id=product_to_display.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Rechercher des substituts" id="button">
+        </form>
       </div>  
    </div>
   </div>

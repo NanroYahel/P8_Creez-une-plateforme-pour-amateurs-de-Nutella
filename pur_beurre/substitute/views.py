@@ -84,7 +84,7 @@ def search(request):
 		products = Product.objects.filter(name__icontains=query)
 
 		if len(products) ==0:
-			no_result_message = 'Sorry, there is no result...'
+			no_result_message = 'Sorry, there is no result...'	
 	context = {
 		'products':products,
 		'keyword':query,
@@ -93,3 +93,11 @@ def search(request):
 	}
 
 	return render(request, 'substitute/search_result.html', context)
+
+def find_substitute(request, product_id):
+	substitute_query = utils.find_substitute(product_id)
+	list_substitute = []
+	#Create a list of product object to display in the template
+	for product in substitute_query:
+		list_substitute.append(Product.objects.get(pk=product.id))
+	return render(request, 'substitute/substitutes_found.html', locals())

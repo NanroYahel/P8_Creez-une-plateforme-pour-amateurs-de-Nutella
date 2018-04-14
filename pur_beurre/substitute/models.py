@@ -6,5 +6,5 @@ class Product(models.Model):
     image_url = models.URLField()
     categories = models.CharField(max_length=500)
     score = models.CharField(max_length=5)
-    code = models.CharField(max_length=15)
+    code = models.CharField(max_length=30)
 
