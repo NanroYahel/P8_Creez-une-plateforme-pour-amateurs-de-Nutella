@@ -14,7 +14,7 @@
         {% endif %}
         <ul>
         	{% for result in products  %}
-        	<li><a href="{% url 'substitute:product_sheet' product_id=result.id %}">{{ result.name }}</a></li>
+        	<li><a href="{% url 'substitute:find_substitute' product_id=result.id %}">{{ result.name }}</a></li>
         	{% endfor %}
        </ul>
       </div>  

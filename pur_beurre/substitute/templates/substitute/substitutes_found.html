@@ -2,20 +2,33 @@
 
 {% block content %}
 
-  {% for substitute in list_substitute %}
-    <section id="account_info">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 mx-auto text-center">
-            <h1>{{ substitute.name }}</h1>
-            <p><strong>Cagtegories :</strong> {{ substitute.categories }}</p>
-            <p><strong>Score : </strong> {{ substitute.score }}</p>
-            <img src="{{ substitute.image_url }}" alt="Photo du produit : {{ substitute.name }}"/>
-            
-          </div>  
-       </div>
-      </div>
-    </section>
-  {% endfor %}
+<section id="account_info">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1>{{ product_selected.name }}</h1>
+        <p><strong>Cagtegories :</strong> {{ product_selected.categories }}</p>
+        <p><strong>Score : </strong> {{ product_selected.score }}</p>
+        <img src="{{ product_selected.image_url }}" alt="Photo du produit : {{ product_selected.name }}"/>
+      </div>  
+      <h2>Vous pourriez remplacer ce produit par les suivants : </h2>
+   </div>
+   <div class="row">
+   {% for substitute in list_substitute %}
+    <div class="col-lg-4 text-center">
+      <h3><a href="{% url 'substitute:product_sheet' product_id=substitute.id %}">{{ substitute.name }}</a></h3>
+      {% if user.is_authenticated %}
+      <form method="get" action="{% url 'substitute:add_favorite' %}">
+          <input type="checkbox" name="check" value="{{substitute.id}}">
+          <input type="submit" value="Sauvegarder" id="button">
+      </form>
+      {% endif %}
+    </div>        
+   {% endfor %}  
+   </div>
+  </div>
+</section>
 
+  
 {% endblock %}
+
