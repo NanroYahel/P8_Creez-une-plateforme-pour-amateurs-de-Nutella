@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, redirect
 # from django.http import HttpResponse
 # from django.template import loader
@@ -5,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .forms import LoginForm, SignInForm
 from .models import Product, Favorite
@@ -70,41 +73,48 @@ def user_account(request):
 
 def product_sheet(request, product_id):
     product_to_display = Product.objects.get(pk=product_id)
-
-
-    #------------ Test to display substitutes under the product sheet------------------
-    substitute_query = utils.find_substitute(product_id)
-    list_substitute = []
-    #Create a list of product object to display in the template
-    for product in substitute_query:
-        list_substitute.append(Product.objects.get(pk=product.id))
+    product_to_display.nutriments = json.loads(product_to_display.nutriments.replace('\'','"'))
+    score_image = 'substitute/img/nutriscore-' + product_to_display.score + '.svg'
+    print(score_image)
 
     return render(request, 'substitute/product_sheet.html', locals())
     
 def search(request):
-    query = request.GET.get('query')
+    query = request.POST.get('query')
     no_result_message = False
     no_query_message = False
+    
     if not query:
-        products = Product.objects.all()
+        products_list = Product.objects.all()
         query = "" #Use to not display 'None' in the title of the result page
         no_query_message = True
     else:
-        products = Product.objects.filter(name__icontains=query)
+        products_list = Product.objects.filter(name__icontains=query)
 
-        if not products:
+        if not products_list:
             no_result_message = 'Sorry, there is no result...'
+        paginator = Paginator(products_list, 30)
+        page = request.GET.get('page')
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
+
         context = {
             'products':products,
-            'keyword':query,
+            'query':query,
             'no_result_message':no_result_message,
-            'no_query_message':no_query_message
+            'no_query_message':no_query_message,
+            'paginate':True
         }
 
     return render(request, 'substitute/search_result.html', context)
 
 def find_substitute(request, product_id):
     product_selected = Product.objects.get(pk=product_id)
+    score_image = 'substitute/img/nutriscore-' + product_selected.score + '.svg'
     substitute_query = utils.find_substitute(product_id)
     list_substitute = []
     #Create a list of product object to display in the template

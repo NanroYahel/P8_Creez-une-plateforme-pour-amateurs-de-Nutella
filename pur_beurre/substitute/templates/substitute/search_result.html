@@ -14,12 +14,22 @@
         {% endif %}
         <ul>
         	{% for result in products  %}
-        	<li><a href="{% url 'substitute:find_substitute' product_id=result.id %}">{{ result.name }}</a></li>
+        	<li class="list-unstyled"><a href="{% url 'substitute:find_substitute' product_id=result.id %}">{{ result.name }}</a></li>
         	{% endfor %}
        </ul>
       </div>  
    </div>
   </div>
+  {% if paginate %}
+    <ul class="text-center list-unstyled">
+      {% if products.has_previous %}
+          <li><a href="?page={{ products.previous_page_number }}">Précédent</a></li>
+      {% endif %}
+      {% if products.has_next %}
+          <li><a href="?page={{ products.next_page_number }}">Suivant</a></li>
+      {% endif %}
+    </ul>
+  {% endif %}
 </section>
 
 {% endblock %}

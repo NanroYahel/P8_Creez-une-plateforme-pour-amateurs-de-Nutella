@@ -11,14 +11,14 @@
                 <strong>Du gras oui, mais de qualité ! </strong>
               </h1>
               <hr>
-              <h2>Trouvez un produit de substitution à ceux que vous consommez tous les jours</h2>
+              <h2>Trouvez un produit de substitution à ceux que vous consommez tous les jours.</h2>
             </div>
           </div>
           <div class="row">
             <div class="col-lg-10 mx-auto form-search-substitute">
-              <form method="get" action="{% url 'substitute:search' %}">
+              <form method="post" action="{% url 'substitute:search' %}">
                 {% csrf_token %}
-                <input class="col-lg-8" type="text" name="query"  id="search-zone" placeholder="Saisissez un aliment">
+                <input class="col-lg-8" type="text" name="query"  id="search-zone" placeholder="Saisissez un produit">
                 <input class="col-lg-2" type="submit" value="Chercher" id="button">
             </form>
             </div>

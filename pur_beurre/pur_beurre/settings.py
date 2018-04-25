@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'pur_beurre.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'food_test_application',
+        'NAME': 'new_food_test_application',
         'USER' : 'ronan',
         'PASSWORD' : '',
         'HOST' : '',

@@ -41,9 +41,10 @@ h6 {
 footer{
   background-color: #c45525;
   min-height: 100px;
-/*  position: fixed;
+  position: relative;
+  margin-top: -100px;
   bottom: 0;
-  width: 100%;*/
+  width: 100%;
 }
 
 footer .container{
@@ -353,4 +354,21 @@ header.masthead p {
 .form_div p{
   margin-right: 20%;
   text-align: right;
+}
+
+#container{
+  position: relative;
+  min-height: 100%;
+}
+
+.image_product{
+  width: 100%;
+}
+
+#product_title{
+  margin-bottom: 1em;
+}
+
+#logo{
+  margin-right: 0.3em;
 }

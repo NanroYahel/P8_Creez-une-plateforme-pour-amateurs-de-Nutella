@@ -7,7 +7,7 @@ from .models import Product, Favorite
 
 URL = 'https://world.openfoodfacts.org/language/french/'
 
-DB = psycopg2.connect("dbname='food_test_application' user='ronan'")
+DB = psycopg2.connect("dbname='new_food_test_application' user='ronan'")
 cur = DB.cursor()
 
 def get_data_from_opc():
@@ -28,32 +28,23 @@ def get_data_from_opc():
                     categories = product['categories']
                     score = product['nutrition_grades']
                     code = product['code']
+                    image_small_url = product['image_small_url']
+                    nutriments = str(product['nutriments'])
 
-                    if categories == "" or name == "" or score == "" or image == "" or code == "":
+                    if categories == "" or name == "" or score == "" or image == "" or code == "" or image_small_url == "" or nutriments == "" or len(nutriments) > 1500 :
                         continue
                     else:
-                        product_to_save = Product(name=name, image_url=image, categories=categories, score=score, code=code)
-                        cur.execute("""INSERT INTO substitute_product (name, image_url, categories, score, code) \
-                        VALUES (%s, %s, %s, %s, %s)""",(product_to_save.name, product_to_save.image_url, product_to_save.categories, product_to_save.score, product_to_save.code))
+                        product_to_save = Product(name=name, image_url=image, categories=categories, score=score, code=code, image_small_url=image_small_url, nutriments=nutriments)
+                        cur.execute("""INSERT INTO substitute_product (name, image_url, categories, score, code, image_small_url, nutriments) \
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)""",(product_to_save.name, product_to_save.image_url, product_to_save.categories, product_to_save.score, product_to_save.code, product_to_save.image_small_url, product_to_save.nutriments))
                 except KeyError:
                     continue
-
+            #TO DELETE FOR DEF VERSION
+            DB.commit()
             i = i+1
         print(i)
-        DB.commit()
+        # DB.commit() TO RETABLISH FOR DEF VERSION
     print('Remplissage de la base terminé ! ')
-
-
-#----------------- TO DELETE-------------------------
-# def display_product_terminal():
-#   """TO DELETE -> use for creating find_substitue fonction"""
-#   search_product = input("Entrez l'id d'un produit : ")
-#   product = Product.objects.get(pk=search_product)
-#   list_categories = product.categories.split(',')
-#   print(product.name)
-#   print(list_categories)
-#   return product
-
 
 def find_substitute(search_product):
     """Function matching a product with another product with better score and common categories"""
@@ -69,19 +60,21 @@ def find_substitute(search_product):
     for i in range(1, len(categories)):
 
         if not is_empty:
-                # print(categories[i])
                 test_query = substitute.filter(categories__icontains=categories[i])
-                # print("longueur querry set : " + str(len(test_query)))
 
-                if len(test_query.filter(score__lt=score)) == 0: #Test if the query contains substitute with a better score
+                if score == 'a' and len(test_query.filter(score=score)) ==0:
+                    is_empty = True
+                elif len(test_query.filter(score__lt=score)) == 0: #Test if the query contains substitute with a better score
                     is_empty = True
                 else:
                     substitute = test_query
         else:
             break
 
-
-    substitute = substitute.filter(score__lt=score)[:5]
+    if score == 'a':
+        substitute = substitute.filter(score=score)[:5]
+    else:
+        substitute = substitute.filter(score__lt=score)[:5]
     # print('Résultat query_set : ', substitute)
 
     #Loop to display result in the terminal, need to be change for display on the web application
