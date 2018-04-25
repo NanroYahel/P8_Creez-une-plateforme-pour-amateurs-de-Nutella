@@ -5,9 +5,13 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 mx-auto text-center">
-        <h1>Résultat de la recherche : {{ keyword }}</h1>
+        <h1>Résultat de la recherche : {{ query }}</h1>
         {% if no_result_message %}
         <p>{{ no_result_message }}</p>
+        <p>Voici la liste de tous les produits : </p>
+          {% for result in products  %}
+            <li class="list-unstyled"><a href="{% url 'substitute:find_substitute' product_id=result.id %}">{{ result.name }}</a></li>
+          {% endfor %}
         {% elif no_query_message %}
         <p>Vous n'avez rien entré dans le champ de recherche.</br>
         Voici la liste des produits : </p>

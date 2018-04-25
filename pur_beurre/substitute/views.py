@@ -13,6 +13,10 @@ from .forms import LoginForm, SignInForm
 from .models import Product, Favorite
 from substitute import utils
 
+#Globales variables used for the pagination of search results
+PRODUCTS_LIST = ''
+USER_QUERY = ''
+
 def index(request):
     return render(request, 'substitute/index.html')
 
@@ -80,35 +84,46 @@ def product_sheet(request, product_id):
     return render(request, 'substitute/product_sheet.html', locals())
     
 def search(request):
-    query = request.POST.get('query')
     no_result_message = False
     no_query_message = False
-    
-    if not query:
-        products_list = Product.objects.all()
-        query = "" #Use to not display 'None' in the title of the result page
-        no_query_message = True
-    else:
-        products_list = Product.objects.filter(name__icontains=query)
+    global PRODUCTS_LIST
+    global USER_QUERY
 
-        if not products_list:
-            no_result_message = 'Sorry, there is no result...'
-        paginator = Paginator(products_list, 30)
-        page = request.GET.get('page')
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
+    if request.method == "POST":
+        query = request.POST.get('query')
 
-        context = {
-            'products':products,
-            'query':query,
-            'no_result_message':no_result_message,
-            'no_query_message':no_query_message,
-            'paginate':True
-        }
+        if not query:
+            #If the user don't write a product name, display all the products
+            PRODUCTS_LIST = Product.objects.all().order_by('name')
+            query = "" #Use to not display 'None' in the title of the result page
+            no_query_message = True
+        else:
+            #Search products with an name containing the query
+            PRODUCTS_LIST = Product.objects.filter(name__icontains=query).order_by('name')
+            USER_QUERY = query
+
+            if not PRODUCTS_LIST:
+            #If no result, display all the products
+                no_result_message = 'Sorry, there is no result...'
+                PRODUCTS_LIST = Product.objects.all().order_by('name')
+
+
+    paginator = Paginator(PRODUCTS_LIST, 30)
+    page = request.GET.get('page')
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+
+    context = {
+        'products':products,
+        'query':USER_QUERY,
+        'no_result_message':no_result_message,
+        'no_query_message':no_query_message,
+        'paginate':True
+    }
 
     return render(request, 'substitute/search_result.html', context)
 

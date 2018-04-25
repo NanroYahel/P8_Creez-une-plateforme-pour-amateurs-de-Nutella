@@ -5,12 +5,8 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 mx-auto text-center">
-        <h1>Profil</h1>
-        <p><strong>Nom :</strong> {{ user.username }}</p>
+        <h1 id="product_title">Produits favoris de {{ user.username}}</h1>
       </div>
-    </div>
-    <div class="row">
-      <h2 class="text-center mx-auto">Liste des Produits favoris : </h2>
     </div>
     <div class="row">
       	{% for favorite in favorites_list %}
