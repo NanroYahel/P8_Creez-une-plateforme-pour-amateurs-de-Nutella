@@ -135,6 +135,7 @@ def find_substitute(request, product_id):
     #Create a list of product object to display in the template
     for product in substitute_query:
         list_substitute.append(Product.objects.get(pk=product.id))
+        
     return render(request, 'substitute/substitutes_found.html', locals())
 
 @login_required
@@ -142,10 +143,8 @@ def add_favorite(request):
     """Add the product selected in the list of favorite of the user"""
     query = request.GET.get('check')
     if query:
-        print('user : ', request.user.id, 'product :', query)
         new_favorite = Favorite.objects.create(user_id=request.user.id, product_id=int(query))
         new_favorite.save()
-        return render(request, 'substitute/index.html')
 
     return render(request, 'substitute/index.html')
 

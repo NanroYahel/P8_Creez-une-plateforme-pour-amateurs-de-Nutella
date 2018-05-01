@@ -24,15 +24,16 @@
       </div>  
    </div>
   </div>
+  {% load static%}
   {% if paginate %}
-    <ul class="text-center list-unstyled">
+    <p class="text-center">
       {% if products.has_previous %}
-          <li><a href="?page={{ products.previous_page_number }}">Précédent</a></li>
+          <a href="?page={{ products.previous_page_number }}"><img src="{% static 'substitute/img/mini_left_arrow.png' %}" alt="Précédent"></a>
       {% endif %}
       {% if products.has_next %}
-          <li><a href="?page={{ products.next_page_number }}">Suivant</a></li>
+          <a href="?page={{ products.next_page_number }}"><img src="{% static 'substitute/img/mini_right_arrow.png' %}" alt="Suivant"></a>
       {% endif %}
-    </ul>
+    </p>
   {% endif %}
 </section>
 

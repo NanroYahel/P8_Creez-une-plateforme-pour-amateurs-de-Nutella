@@ -12,6 +12,10 @@
         {% endif %}
         {% if confirmation_message %}
           <p><strong>{{ confirmation_message }}</strong></p>
+        {% load static %}
+        <p> Vous allez être redirigé vers la page d'acceuil dans <span id='counter'>5</span> seconde(s).</p>
+        <p>Si ce n'est pas le cas, cliquer <a href="{% url 'substitute:index' %}">ici</a></p>
+        <script type="text/javascript" src="{% static 'substitute/js/counter.js' %}"></script>
         {% else %}
         <div class="form_div">
           <form method="post" action="{% url 'substitute:sign_in' %}">
