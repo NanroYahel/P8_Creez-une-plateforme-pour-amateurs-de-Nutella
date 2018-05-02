@@ -1,11 +1,10 @@
-"""Test module"""
+"""Test the views of the application"""
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
 from .models import Product, Favorite
-from . import utils
 
 
 
@@ -50,44 +49,11 @@ class FunctionTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_search(self):
+        """Test that the 'search' views return a 200 code with or without a query"""
         user_search = "nutel"
         response_no_query = self.client.get(reverse('substitute:search'))
-        response_query = self.client.get(reverse('substitute:search', args=('query':user_search,)))
-        self.assertEqual(response.status_code, 200)
-        print(response)
-
-
-
-class UtilsTestCase(TestCase):
-
-    def setUp(self):
-        """Create somme products in the database"""
-        nutella = Product.objects.create(name='Nutella', score='e', categories='test', nutriments="{'test_nutriment': 10}")
-        marmelade = Product.objects.create(name='Marmelade', score='d', categories='test', nutriments="{'test_nutriment': 10}")
-        self.product_id = Product.objects.get(name='Nutella').id
-        self.substitute_id = Product.objects.get(name='Marmelade').id
-        user_with_favorite = User.objects.create(username='test_user')
-        user_without_favorite = User.objects.create(username='no_favorite_user')
-        self.user = User.objects.get(username='test_user')
-        self.no_favorite_user = User.objects.get(username='no_favorite_user')
-        favorite = Favorite.objects.create(user_id=self.user.id, product_id=self.substitute_id)
-        
-
-    def test_find_substitute(self):
-        """Test that the finding substitute function return correctly substitutes"""
-        has_substitute = utils.find_substitute(self.product_id)
-        no_substitute = utils.find_substitute(self.substitute_id)
-        self.assertEqual(len(has_substitute), 1)
-        self.assertEqual(len(no_substitute), 0)
-
-    def test_find_favorites(self):
-        """Test the finding favorites function"""
-        has_favorites = utils.find_favorites(self.user)
-        no_favorite = utils.find_favorites(self.no_favorite_user)
-        self.assertEqual(len(has_favorites), 1)
-        self.assertEqual(len(no_favorite), 0)
-
-
-
+        response_query = self.client.post(reverse('substitute:search'), data={'query':user_search,})
+        self.assertEqual(response_query.status_code, 200)
+        self.assertEqual(response_no_query.status_code, 200)
 
 

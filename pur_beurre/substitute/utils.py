@@ -6,18 +6,18 @@ from .models import Product, Favorite
 
 URL = 'https://world.openfoodfacts.org/language/french/'
 
-DB = psycopg2.connect("dbname='new_food_test_application' user='ronan'")
+DB = psycopg2.connect("dbname='db_purbeurre' user='ronan'")
 cur = DB.cursor()
 
 def get_data_from_opc():
     """Function use to ger all french products in the openfoodfacts database"""
     last_page = False
-    i = 1
+    i = 1401
     while not last_page:
         url = URL + str(i) +'.json'
         data = req.get(url)
         data = data.json()
-        if data['products'] == []:
+        if i == 1800: #For an Heroku deployment, change this line by 'if i == 550:' else, 'if data['products'] == []:'
             last_page = True
         else:
             for product in data['products']:
