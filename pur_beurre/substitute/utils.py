@@ -12,12 +12,12 @@ cur = DB.cursor()
 def get_data_from_opc():
     """Function use to ger all french products in the openfoodfacts database"""
     last_page = False
-    i = 1401
+    i = 1
     while not last_page:
         url = URL + str(i) +'.json'
         data = req.get(url)
         data = data.json()
-        if i == 1800: #For an Heroku deployment, change this line by 'if i == 550:' else, 'if data['products'] == []:'
+        if data['products'] == []: #For an Heroku deployment, change this line by 'if i == 1800:' else, 'if data['products'] == []:'
             last_page = True
         else:
             for product in data['products']:
