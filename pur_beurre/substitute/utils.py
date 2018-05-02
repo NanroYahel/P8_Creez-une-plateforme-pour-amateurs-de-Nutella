@@ -1,5 +1,4 @@
-import json
-
+"""Module that contains all functions used in the application"""
 import requests as req
 import psycopg2
 
@@ -19,7 +18,7 @@ def get_data_from_opc():
         data = req.get(url)
         data = data.json()
         if data['products'] == []:
-            last_page=True
+            last_page = True
         else:
             for product in data['products']:
                 try:
@@ -31,12 +30,12 @@ def get_data_from_opc():
                     image_small_url = product['image_small_url']
                     nutriments = str(product['nutriments'])
 
-                    if categories == "" or name == "" or score == "" or image == "" or code == "" or image_small_url == "" or nutriments == "" or len(nutriments) > 1500 :
+                    if categories == "" or name == "" or score == "" or image == "" or code == "" or image_small_url == "" or nutriments == "" or len(nutriments) > 1500:
                         continue
                     else:
                         product_to_save = Product(name=name, image_url=image, categories=categories, score=score, code=code, image_small_url=image_small_url, nutriments=nutriments)
                         cur.execute("""INSERT INTO substitute_product (name, image_url, categories, score, code, image_small_url, nutriments) \
-                        VALUES (%s, %s, %s, %s, %s, %s, %s)""",(product_to_save.name, product_to_save.image_url, product_to_save.categories, product_to_save.score, product_to_save.code, product_to_save.image_small_url, product_to_save.nutriments))
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)""", (product_to_save.name, product_to_save.image_url, product_to_save.categories, product_to_save.score, product_to_save.code, product_to_save.image_small_url, product_to_save.nutriments))
                 except KeyError:
                     continue
             #TO DELETE FOR DEF VERSION
@@ -56,18 +55,18 @@ def find_substitute(search_product):
 
     substitute = Product.objects.filter(categories__icontains=categories[0])
 
-    # Course all categories of the product, to find the products with the most categories in common 
+    # Course all categories of the product, to find the products with the most categories in common
     for i in range(1, len(categories)):
 
         if not is_empty:
-                test_query = substitute.filter(categories__icontains=categories[i])
+            test_query = substitute.filter(categories__icontains=categories[i])
 
-                if score == 'a' and len(test_query.filter(score=score)) ==0:
-                    is_empty = True
-                elif len(test_query.filter(score__lt=score)) == 0: #Test if the query contains substitute with a better score
-                    is_empty = True
-                else:
-                    substitute = test_query
+            if score == 'a' and len(test_query.filter(score=score)) == 0:
+                is_empty = True
+            elif len(test_query.filter(score__lt=score)) == 0: #Test if the query contains substitute with a better score
+                is_empty = True
+            else:
+                substitute = test_query
         else:
             break
 
@@ -75,19 +74,6 @@ def find_substitute(search_product):
         substitute = substitute.filter(score=score)[:5]
     else:
         substitute = substitute.filter(score__lt=score)[:5]
-    # print('Résultat query_set : ', substitute)
-
-    #Loop to display result in the terminal, need to be change for display on the web application
-    # for i in range(0,5):
-    #   try:
-    #       print("------New product-------")
-    #       print("name : " + substitute[i].name)
-    #       print("categories : " + substitute[i].categories)
-    #       print("score : " + substitute[i].score)
-    #   except IndexError:
-    #       print("Il n'y en a pas plus...")
-    #       break
-
 
     # Loop for the final utilisation in the view
     list_substitute = []
@@ -100,12 +86,3 @@ def find_favorites(user):
     """Function matching a product with another product with better score and common categories"""
     list_favorites = Favorite.objects.all().filter(user_id=user.id)
     return list_favorites
-
-
-def test_function():
-    search_product = input("Entrez l'id d'un produit : ")
-    find_substitute(search_product)
-
-
-
-

@@ -79,7 +79,6 @@ def product_sheet(request, product_id):
     product_to_display = Product.objects.get(pk=product_id)
     product_to_display.nutriments = json.loads(product_to_display.nutriments.replace('\'','"'))
     score_image = 'substitute/img/nutriscore-' + product_to_display.score + '.svg'
-    print(score_image)
 
     return render(request, 'substitute/product_sheet.html', locals())
     

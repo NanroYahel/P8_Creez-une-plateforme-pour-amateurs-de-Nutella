@@ -23,7 +23,7 @@ from django.contrib import admin
 from substitute import views
 
 urlpatterns = [
-	url(r'^$', views.index),
+	url(r'^$', views.index, name="index"),
 	url(r'^substitute/', include(('substitute.urls','substitute'), namespace="substitute")),
     url(r'^admin/', admin.site.urls),
 ]
