@@ -6,13 +6,20 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 mx-auto text-center">
-        <h1 id="product_title">{{ product_selected.name }}</h1>
+        <h1 id="product_title"><a href="{% url 'substitute:product_sheet' product_id=product_selected.id %}">{{ product_selected.name }}</a></h1>
         {% load static %}
         <img src="{% static score_image %}" alt="{{product_to_display.score}}">
         <img src="{{ product_selected.image_url }}" alt="Photo du produit : {{ product_selected.name }}"/>
       </div>  
-      <h2>Vous pourriez remplacer ce produit par les suivants : </h2>
+      <h2>Vous pourriez remplacer ce produit par le(s) suivant(s) : </h2>
    </div>
+   {% if no_substitute %}
+   <div class="row">
+    <div class="col-lg-8 mx-auto text-center">
+     <p>{{ no_substitute }}</p>
+    </div>
+   </div>
+   {% else %}
     <div class="row">
       {% for substitute in list_substitute %}
       <div class="col-lg-4 text-center">
@@ -30,6 +37,7 @@
       {% load static %}
         <script type="text/javascript" src="{% static 'substitute/js/checkbox.js' %}"></script>
     </div>
+  {% endif %}
   </div>
 </section>
 

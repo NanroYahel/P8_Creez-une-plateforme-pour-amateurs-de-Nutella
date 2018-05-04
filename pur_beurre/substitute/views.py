@@ -134,6 +134,9 @@ def find_substitute(request, product_id):
     #Create a list of product object to display in the template
     for product in substitute_query:
         list_substitute.append(Product.objects.get(pk=product.id))
+
+    if list_substitute == []:
+        no_substitute = "Sorry, there is no substitute for this product in our database... "
         
     return render(request, 'substitute/substitutes_found.html', locals())
 
