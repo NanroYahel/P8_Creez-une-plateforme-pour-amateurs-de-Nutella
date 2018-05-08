@@ -18,14 +18,20 @@ PRODUCTS_LIST = ''
 USER_QUERY = ''
 
 def index(request):
+    """Display the main page of the application"""
     return render(request, 'substitute/index.html')
 
 def legal(request):
+    """Display legal notice"""
     return render(request, 'substitute/legal.html')
 
 def user_login(request):
+    """View used to login"""
+
+    #Use to store the error message in case of error
     error = False
 
+    #If POST request, try to connect the user
     if request.method == "POST":
         form = LoginForm(request.POST)
 
@@ -38,6 +44,7 @@ def user_login(request):
                 login(request, user)
             else:
                 error = True
+    #If not POST request display the form to login
     else:
         form = LoginForm()
 
@@ -45,12 +52,17 @@ def user_login(request):
 
 
 def user_logout(request):
+    """View used to logout the user"""
     logout(request)
     return redirect(reverse(index))
 
 def sign_in(request):
+    """View to sign-in"""
+
+    #Use to store the error message in case of error
     error = False
 
+    #If POST request, try to create a new user with the informations.
     if request.method == "POST":
         form = SignInForm(request.POST)
 
@@ -66,6 +78,7 @@ def sign_in(request):
                 user = User.objects.create_user(username, email, password)
                 user.save()
                 confirmation_message = 'Le compte a bien été créé. Merci pour votre inscription !'
+    #If not POST request, display the form
     else:
         form = SignInForm()
 
@@ -73,18 +86,25 @@ def sign_in(request):
 
 
 def user_account(request):
+    """Display the name and the email of the user"""
     return render(request, 'substitute/account.html', locals())
 
 def product_sheet(request, product_id):
+    """View to display the selected product"""
     product_to_display = Product.objects.get(pk=product_id)
-    product_to_display.nutriments = json.loads(product_to_display.nutriments.replace('\'','"'))
+    product_to_display.nutriments = json.loads(product_to_display.nutriments.replace('\'', '"'))
     score_image = 'substitute/img/nutriscore-' + product_to_display.score + '.svg'
 
     return render(request, 'substitute/product_sheet.html', locals())
-    
+
 def search(request):
+    """View that manage the search function"""
+
     no_result_message = False
     no_query_message = False
+
+    #Use global variables to store the query and the result of the search 
+    #Those gobal variables are usefull because of the pagination
     global PRODUCTS_LIST
     global USER_QUERY
 
@@ -127,6 +147,7 @@ def search(request):
     return render(request, 'substitute/search_result.html', context)
 
 def find_substitute(request, product_id):
+    """View that display the selected product and the substitutes associate"""
     product_selected = Product.objects.get(pk=product_id)
     score_image = 'substitute/img/nutriscore-' + product_selected.score + '.svg'
     substitute_query = utils.find_substitute(product_id)
@@ -137,7 +158,7 @@ def find_substitute(request, product_id):
 
     if list_substitute == []:
         no_substitute = "Sorry, there is no substitute for this product in our database... "
-        
+
     return render(request, 'substitute/substitutes_found.html', locals())
 
 @login_required
@@ -152,6 +173,7 @@ def add_favorite(request):
 
 @login_required
 def favorites(request):
+    """View that display all the favorites of the user"""
     favorites_query = utils.find_favorites(request.user)
     favorites_list = []
     for favorite in favorites_query:

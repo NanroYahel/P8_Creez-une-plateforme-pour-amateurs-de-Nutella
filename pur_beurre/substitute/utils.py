@@ -6,6 +6,8 @@ from .models import Product, Favorite
 
 URL = 'https://world.openfoodfacts.org/language/french/'
 
+
+########################### Function to fill the database with openfoodfacts (uncomment to use it) ###################
 # # DB = psycopg2.connect("dbname='db_purbeurre' user='ronan'") #Usefull for a local use of the database
 # cur = DB.cursor()
 
@@ -44,6 +46,8 @@ URL = 'https://world.openfoodfacts.org/language/french/'
 #         print(i)
 #         # DB.commit() TO RETABLISH FOR DEF VERSION
 #     print('Remplissage de la base terminé ! ')
+
+######################################################################
 
 def find_substitute(search_product):
     """Function matching a product with another product with better score and common categories"""

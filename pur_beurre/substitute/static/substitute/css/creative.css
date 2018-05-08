@@ -319,3 +319,9 @@ header.masthead p {
     justify-content: initial;
   }
 }
+
+.product-added{
+  margin-top: 1em;
+  color: red;
+  font-style: italic;
+}
