@@ -32,10 +32,13 @@ $(document).ready(function() {
 
 	var $form = $('form');
 	$form.on('submit', function(e){
+		//Prevent action of button
 		e.preventDefault();
+		//Check if checkbox is True
 		if ($('form input:checkbox').is(':checked')){
 			var prod_id;
 			prod_id = $('input:checkbox', this).attr("value");
+			//Call the view "add_favorite" and return a message instead of the button
 			$.ajax({
 				url:$(this).attr('action'),
 				data:{product_id:prod_id},
@@ -45,6 +48,7 @@ $(document).ready(function() {
 			})
 			$(this).hide();
 		} else{
+			//return an alert if checkbox is false
 			alert("Veuillez cocher la case pour enregistrer le produit.");
 			e.preventDefault();
 		}
