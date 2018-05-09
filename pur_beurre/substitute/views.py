@@ -8,6 +8,8 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse, HttpResponse
 
 from .forms import LoginForm, SignInForm
 from .models import Product, Favorite
@@ -162,14 +164,23 @@ def find_substitute(request, product_id):
     return render(request, 'substitute/substitutes_found.html', locals())
 
 @login_required
-def add_favorite(request):
+def add_favorite(request, product_id):
     """Add the product selected in the list of favorite of the user"""
-    query = request.GET.get('check')
+    query = product_id
+    result_message = ""
     if query:
-        new_favorite = Favorite.objects.create(user_id=request.user.id, product_id=int(query))
-        new_favorite.save()
+        try:
+            Favorite.objects.get(user_id=request.user.id, product_id=int(query))
+            result_message = "Ce produit est déjà dans vos favoris."
+        except ObjectDoesNotExist:
+            new_favorite = Favorite.objects.create(user_id=request.user.id, product_id=int(query))
+            new_favorite.save()
+            result_message = "Le produit a bien été enregistré."
 
-    return render(request, 'substitute/index.html')
+    # context = {
+    #     'result_message': result_message
+    # }
+    return HttpResponse(result_message)
 
 @login_required
 def favorites(request):

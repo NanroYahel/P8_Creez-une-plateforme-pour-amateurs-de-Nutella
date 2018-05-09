@@ -27,15 +27,15 @@
         <p class="text-uppercase">Nutri-Score : <strong>{{substitute.score}}</strong></p>
         <img src="{{ substitute.image_small_url }}" alt="{{ substitute.name }}">
         {% if user.is_authenticated %}
-        <form method="get" action="{% url 'substitute:add_favorite' %}">
+        <div class="save-result" id="{{substitute.id}}"></div>
+        <form method="post" action="{% url 'substitute:add_favorite' product_id=substitute.id %}">
+            {% csrf_token %}
             <input type="checkbox" name="check" value="{{substitute.id}}">
             <input type="submit" value="Sauvegarder">
         </form>
         {% endif %}
       </div>        
       {% endfor %}  
-      {% load static %}
-        <script type="text/javascript" src="{% static 'substitute/js/checkbox.js' %}"></script>
     </div>
   {% endif %}
   </div>
@@ -44,3 +44,8 @@
   
 {% endblock %}
 
+{% block javascript %}
+  {% load static %}
+  <script type="text/javascript" src="{% static 'substitute/js/checkbox.js' %}"></script>
+
+{% endblock %}

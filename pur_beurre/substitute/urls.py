@@ -12,6 +12,6 @@ urlpatterns = [
     url(r'^search/$', views.search, name='search'),
     url(r'^find_substitute/(?P<product_id>[0-9]+)/$', views.find_substitute, name='find_substitute'),
     url(r'^favorites/$', views.favorites, name='favorites'),
-    url(r'^add_favorite/$', views.add_favorite, name='add_favorite'),
+    url(r'^add_favorite/(?P<product_id>[0-9]+)/$', views.add_favorite, name='add_favorite'),
 
 ]
