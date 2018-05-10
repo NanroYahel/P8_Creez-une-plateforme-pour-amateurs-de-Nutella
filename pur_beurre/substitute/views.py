@@ -80,6 +80,8 @@ def sign_in(request):
                 user = User.objects.create_user(username, email, password)
                 user.save()
                 confirmation_message = 'Le compte a bien été créé. Merci pour votre inscription !'
+                #Log the new user after create his account
+                login(request, user)
     #If not POST request, display the form
     else:
         form = SignInForm()
@@ -159,7 +161,7 @@ def find_substitute(request, product_id):
         list_substitute.append(Product.objects.get(pk=product.id))
 
     if list_substitute == []:
-        no_substitute = "Sorry, there is no substitute for this product in our database... "
+        no_substitute = "Désolé, il n'y a pas de substitut pour ce produit dans notre base de données... "
 
     return render(request, 'substitute/substitutes_found.html', locals())
 

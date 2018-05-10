@@ -2,33 +2,35 @@
 
 {% block content %}
 
-<div class="container">
-  <div class="row">
-    <div class="col-lg-8 mx-auto text-center">
-      <h1 class="section-heading">Se connecter</h1>
+<section id="login">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1 class="section-heading">Se connecter</h1>
 
-        {% if error %}
-        <p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
-        {% endif %}
+          {% if error %}
+          <p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
+          {% endif %}
 
-        {% if user.is_authenticated %}
-        {% load static %}
-        <p>Vous êtes connecté, {{ user.username }} !</p>
-        <p> Vous allez être redirigé vers la page d'accueil dans <span id='counter'>5</span> seconde(s).</p>
-        <p>Si ce n'est pas le cas, cliquer <a href="{% url 'substitute:index' %}">ici</a></p>
-        <script type="text/javascript" src="{% static 'substitute/js/counter.js' %}"></script>
-        {% else %}
-        <div class="form_div">
-          <form method="post" action="{% url 'substitute:login' %}">
-              {% csrf_token %}
-              {{ form.as_p }}
-              <input type="submit" value="Se connecter" />
-          </form>
-        </div>
-        {% endif %}
-    </div>  
- </div>
-</div>
+          {% if user.is_authenticated %}
+          {% load static %}
+          <p>Vous êtes connecté, {{ user.username }} !</p>
+          <p> Vous allez être redirigé vers la page d'accueil dans <span id='counter'>5</span> seconde(s).</p>
+          <p>Si ce n'est pas le cas, cliquer <a href="{% url 'substitute:index' %}">ici</a></p>
+          <script type="text/javascript" src="{% static 'substitute/js/counter.js' %}"></script>
+          {% else %}
+          <div class="form_div">
+            <form method="post" action="{% url 'substitute:login' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Se connecter" />
+            </form>
+          </div>
+          {% endif %}
+      </div>  
+   </div>
+  </div>
+</section>
 
 {% endblock %}
 

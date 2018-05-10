@@ -325,3 +325,7 @@ header.masthead p {
   color: red;
   font-style: italic;
 }
+
+.form_div label{
+  width:200px;
+}
