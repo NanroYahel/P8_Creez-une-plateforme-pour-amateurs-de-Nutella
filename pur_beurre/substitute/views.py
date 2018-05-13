@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 
 from .forms import LoginForm, SignInForm
 from .models import Product, Favorite
@@ -82,6 +82,7 @@ def sign_in(request):
                 confirmation_message = 'Le compte a bien été créé. Merci pour votre inscription !'
                 #Log the new user after create his account
                 login(request, user)
+
     #If not POST request, display the form
     else:
         form = SignInForm()
@@ -179,9 +180,6 @@ def add_favorite(request, product_id):
             new_favorite.save()
             result_message = "Le produit a bien été enregistré."
 
-    # context = {
-    #     'result_message': result_message
-    # }
     return HttpResponse(result_message)
 
 @login_required

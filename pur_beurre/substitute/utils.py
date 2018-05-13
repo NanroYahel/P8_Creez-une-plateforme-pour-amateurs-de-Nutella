@@ -8,44 +8,44 @@ URL = 'https://world.openfoodfacts.org/language/french/'
 
 
 ########################### Function to fill the database with openfoodfacts (uncomment to use it) ###################
-DB = psycopg2.connect("dbname='db_purbeurre' user='ronan'") #Usefull for a local use of the database
-cur = DB.cursor()
+# # DB = psycopg2.connect("dbname='db_purbeurre' user='ronan'") #Usefull for a local use of the database
+# cur = DB.cursor()
 
-def get_data_from_opc():
-    """Function use to ger all french products in the openfoodfacts database"""
-    last_page = False
-    i = 1
-    while not last_page:
-        url = URL + str(i) +'.json'
-        data = req.get(url)
-        data = data.json()
-        if data['products'] == []: #For an Heroku deployment, change this line by 'if i == 1800:' else, 'if data['products'] == []:'
-            last_page = True
-        else:
-            for product in data['products']:
-                try:
-                    name = product['product_name']
-                    image = product['image_url']
-                    categories = product['categories']
-                    score = product['nutrition_grades']
-                    code = product['code']
-                    image_small_url = product['image_small_url']
-                    nutriments = str(product['nutriments'])
+# def get_data_from_opc():
+#     """Function use to ger all french products in the openfoodfacts database"""
+#     last_page = False
+#     i = 1
+#     while not last_page:
+#         url = URL + str(i) +'.json'
+#         data = req.get(url)
+#         data = data.json()
+#         if data['products'] == []: #For an Heroku deployment, change this line by 'if i == 1800:' else, 'if data['products'] == []:'
+#             last_page = True
+#         else:
+#             for product in data['products']:
+#                 try:
+#                     name = product['product_name']
+#                     image = product['image_url']
+#                     categories = product['categories']
+#                     score = product['nutrition_grades']
+#                     code = product['code']
+#                     image_small_url = product['image_small_url']
+#                     nutriments = str(product['nutriments'])
 
-                    if categories == "" or name == "" or score == "" or image == "" or code == "" or image_small_url == "" or nutriments == "" or len(nutriments) > 1500:
-                        continue
-                    else:
-                        product_to_save = Product(name=name, image_url=image, categories=categories, score=score, code=code, image_small_url=image_small_url, nutriments=nutriments)
-                        cur.execute("""INSERT INTO substitute_product (name, image_url, categories, score, code, image_small_url, nutriments) \
-                        VALUES (%s, %s, %s, %s, %s, %s, %s)""", (product_to_save.name, product_to_save.image_url, product_to_save.categories, product_to_save.score, product_to_save.code, product_to_save.image_small_url, product_to_save.nutriments))
-                except KeyError:
-                    continue
-            #TO DELETE FOR DEF VERSION
-            DB.commit()
-            i = i+1
-        print(i)
-        # DB.commit() TO RETABLISH FOR DEF VERSION
-    print('Remplissage de la base terminé ! ')
+#                     if categories == "" or name == "" or score == "" or image == "" or code == "" or image_small_url == "" or nutriments == "" or len(nutriments) > 1500:
+#                         continue
+#                     else:
+#                         product_to_save = Product(name=name, image_url=image, categories=categories, score=score, code=code, image_small_url=image_small_url, nutriments=nutriments)
+#                         cur.execute("""INSERT INTO substitute_product (name, image_url, categories, score, code, image_small_url, nutriments) \
+#                         VALUES (%s, %s, %s, %s, %s, %s, %s)""", (product_to_save.name, product_to_save.image_url, product_to_save.categories, product_to_save.score, product_to_save.code, product_to_save.image_small_url, product_to_save.nutriments))
+#                 except KeyError:
+#                     continue
+#             #TO DELETE FOR DEF VERSION
+#             DB.commit()
+#             i = i+1
+#         print(i)
+#         # DB.commit() TO RETABLISH FOR DEF VERSION
+#     print('Remplissage de la base terminé ! ')
 
 ######################################################################
 

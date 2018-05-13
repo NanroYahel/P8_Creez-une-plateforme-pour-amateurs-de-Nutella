@@ -6,6 +6,7 @@ from .models import Product, Favorite
 from . import utils
 
 class UtilsTestCase(TestCase):
+    """Class to test the functions of 'utils' module"""
 
     def setUp(self):
         """Create somme products in the database"""
@@ -18,7 +19,6 @@ class UtilsTestCase(TestCase):
         self.user = User.objects.get(username='test_user')
         self.no_favorite_user = User.objects.get(username='no_favorite_user')
         favorite = Favorite.objects.create(user_id=self.user.id, product_id=self.substitute_id)
-        
 
     def test_find_substitute(self):
         """Test that the finding substitute function return correctly substitutes"""
@@ -33,6 +33,3 @@ class UtilsTestCase(TestCase):
         no_favorite = utils.find_favorites(self.no_favorite_user)
         self.assertEqual(len(has_favorites), 1)
         self.assertEqual(len(no_favorite), 0)
-
-
-
