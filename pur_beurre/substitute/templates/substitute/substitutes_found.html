@@ -30,8 +30,7 @@
         <div class="save-result" id="{{substitute.id}}"></div>
         <form method="post" action="{% url 'substitute:add_favorite' product_id=substitute.id %}">
             {% csrf_token %}
-            <input type="checkbox" name="check" value="{{substitute.id}}">
-            <input type="submit" value="Sauvegarder">
+            <input type="submit" value="Sauvegarder" id="{{substitute.id}}">
         </form>
         {% endif %}
       </div>        

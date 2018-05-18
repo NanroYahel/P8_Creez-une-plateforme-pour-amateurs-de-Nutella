@@ -67,7 +67,8 @@ def find_substitute(search_product):
 
             if score == 'a' and len(test_query.filter(score=score)) == 0:
                 is_empty = True
-            elif len(test_query.filter(score__lt=score)) == 0: #Test if the query contains substitute with a better score
+            #Test if the query contains substitute with a better score
+            elif len(test_query.filter(score__lt=score)) == 0: 
                 is_empty = True
             else:
                 substitute = test_query
