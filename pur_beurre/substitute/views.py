@@ -128,7 +128,7 @@ def search(request):
 
             if not PRODUCTS_LIST:
             #If no result, display all the products
-                no_result_message = 'Sorry, there is no result...'
+                no_result_message = 'Désolé, il n\'y a pas de résultats pour votre recherche...'
                 PRODUCTS_LIST = Product.objects.all().order_by('name')
 
 

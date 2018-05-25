@@ -18,7 +18,6 @@ class StatusCodeTestCase(TestCase):
         self.substitute_id = Product.objects.get(name='Marmelade').id
         user = User.objects.create(username='test_user')
 
-
     def test_index_page_status_code(self):
         """Test that index page return a 200 code"""
         response = self.client.get(reverse('index'))
@@ -46,7 +45,7 @@ class StatusCodeTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_search_status_code(self):
-        """Test that the 'search' view return a 200 code with or without a query"""
+        """Test that the 'search' views return a 200 code with or without a query"""
         user_search = "nutel"
         response_no_query = self.client.get(reverse('substitute:search'))
         response_query = self.client.post(reverse('substitute:search'), data={'query':user_search,})
@@ -105,3 +104,4 @@ class ReturnDataOfViewsTestCase(TestCase):
         response = self.client.get(reverse('substitute:find_substitute', args=(self.product_id,)))
         substitute_returned = response.context['list_substitute'][0].name
         self.assertEqual(substitute_returned, 'Marmelade')
+

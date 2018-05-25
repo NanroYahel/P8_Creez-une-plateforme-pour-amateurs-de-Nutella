@@ -76,9 +76,9 @@ def find_substitute(search_product):
             break
 
     if score == 'a':
-        substitute = substitute.filter(score=score)[:5]
+        substitute = substitute.filter(score=score)[:6]
     else:
-        substitute = substitute.filter(score__lt=score)[:5]
+        substitute = substitute.filter(score__lt=score)[:6]
 
     # Loop for the final utilisation in the view
     list_substitute = []
